@@ -49,12 +49,14 @@ ADD_BIICODE_TARGETS()
 # Example: how to activate C++11. Uncomment one of this
 #     target_compile_options(${BII_LIB_TARGET} PUBLIC "-std=c++11") # Win, or linux if not gcc problems
 #     target_compile_options(${BII_LIB_TARGET} PUBLIC "-std=c++11"  "-stdlib=libc++") # MacOS
+
+FIND_PACKAGE(OpenGL REQUIRED)
+INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR})
+TARGET_LINK_LIBRARIES(${BII_main_TARGET} PUBLIC ${OPENGL_LIBRARIES})
+
 if(NOT WIN32 OR MINGW)
         IF(APPLE)
-                FIND_PACKAGE(OpenGL REQUIRED)
-                INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR})
                 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
-                TARGET_LINK_LIBRARIES(${BII_main_TARGET} PUBLIC ${OPENGL_LIBRARIES})
         ELSE()
                 target_compile_options(${BII_main_TARGET} PUBLIC "-std=c++11" "-Wl,--no-as-needed") # Ubuntu if gcc problems
         ENDIF()
