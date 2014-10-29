@@ -1,0 +1,9 @@
+#Backup files
+*\~
+*swp
+
+#Windows Thumbs file
+Thumbs.db
+
+#Mac DS_Store file
+.DS_Stor
