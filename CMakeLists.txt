@@ -54,9 +54,9 @@ if(NOT WIN32 OR MINGW)
                 FIND_PACKAGE(OpenGL REQUIRED)
                 INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR})
                 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -stdlib=libc++")
-                TARGET_LINK_LIBRARIES(${BII_LIB_TARGET} PUBLIC ${OPENGL_LIBRARIES})
+                TARGET_LINK_LIBRARIES(${BII_main_TARGET} PUBLIC ${OPENGL_LIBRARIES})
         ELSE()
-                target_compile_options(${BII_LIB_TARGET} PUBLIC "-std=c++11" "-Wl,--no-as-needed") # Ubuntu if gcc problems
+                target_compile_options(${BII_main_TARGET} PUBLIC "-std=c++11" "-Wl,--no-as-needed") # Ubuntu if gcc problems
         ENDIF()
 endif()
 
