@@ -30,8 +30,9 @@ INIT_BIICODE_BLOCK()
 
 # Actually create targets: EXEcutables and libraries.
 IF(APPLE)
-        SET(BII_IMPLICIT_RULES_ENABLED FALSE)
+  SET(BII_IMPLICIT_RULES_ENABLED FALSE)
 ENDIF()
+
 ADD_BIICODE_TARGETS()
 # This function creates the following variables:
 #     ${BII_BLOCK_TARGETS} List of targets defined in this block
@@ -60,6 +61,15 @@ if (NOT ${BII_main_TARGET} STREQUAL "")
   TARGET_LINK_LIBRARIES(${BII_main_TARGET} PUBLIC ${OPENGL_LIBRARIES} )
 elseif(NOT ${BII_LIB_TARGET} STREQUAL "")
   TARGET_LINK_LIBRARIES(${BII_LIB_TARGET} PUBLIC ${OPENGL_LIBRARIES} )
+endif()
+
+if(APPLE)
+  FIND_PACKAGE(GLU REQUIRED)
+  if (NOT ${BII_main_TARGET} STREQUAL "")
+    TARGET_LINK_LIBRARIES(${BII_main_TARGET} PUBLIC ${GLU_LIBRARY} )
+  elseif(NOT ${BII_LIB_TARGET} STREQUAL "")
+    TARGET_LINK_LIBRARIES(${BII_LIB_TARGET} PUBLIC ${GLU_LIBRARY} )
+  endif()
 endif()
 
 #     target_compile_options(${BII_LIB_TARGET} PUBLIC "-std=c++11" "-Wl,--no-as-needed") # Ubuntu if gcc problems
