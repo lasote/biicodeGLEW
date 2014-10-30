@@ -29,6 +29,9 @@ INIT_BIICODE_BLOCK()
 
 
 # Actually create targets: EXEcutables and libraries.
+IF(APPLE)
+    SET(BII_IMPLICIT_RULES_ENABLED FALSE)
+ENDIF()
 ADD_BIICODE_TARGETS()
 # This function creates the following variables:
 #     ${BII_BLOCK_TARGETS} List of targets defined in this block
