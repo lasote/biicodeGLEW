@@ -3,6 +3,10 @@ The OpenGL Extension Wrangler Library (GLEW)
 
 For requests for assistance, comments and suggestions, please open an issue on the project's source code repository: https://github.com/dimitrikourk/biicodeGLEW/issues
 
+**Please use DEV version 1, as there is a problem with STABLE version 0.** Have a look here, if you don't know how:
+
+http://docs.biicode.com/biicode/configuration_files/policies.html
+
 Description
 -----------
 This is a slightly modified edition of the GLEW library (v1.11.0), created with pre-generated source code and adapted for static linking and for being served over biicode. I am not the author of the original version of this library (please see below and also, read the license).
