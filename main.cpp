@@ -1,5 +1,5 @@
 #include <iostream>
-#include "glew.h"
+#include <dimitrikourk/glew/glew.h> 
 
 using namespace std;
 
