@@ -3,9 +3,6 @@ The OpenGL Extension Wrangler Library (GLEW)
 
 For requests for assistance, comments and suggestions, please open an issue on the project's source code repository: https://github.com/dimitrikourk/biicodeGLEW/issues
 
-**Please use DEV version 1, as there is a problem with STABLE version 0.** Have a look here, if you don't know how:
-
-http://docs.biicode.com/biicode/configuration_files/policies.html
 
 Description
 -----------
