@@ -22,4 +22,4 @@ script:
 - cd biicode_project
 - bii find -um
 - bii cpp:build 
-- "./bin/dimitrikourk_glm_main"
+- "./bin/dimitrikourk_glew_main"
