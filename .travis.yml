@@ -23,3 +23,9 @@ script:
 - bii find -um
 - bii cpp:build 
 - "./bin/dimitrikourk_glew_main"
+after_success:
+- bii user dimitrikourk -p $PASSWORD
+- bii publish
+env:
+  global:
+    secure: "PQau8dSU9R0nnSrDO0YvkNOODdKwEs1LChMvcNkCzpx9zrn3lvHliAnnMrjW9hdLB55ts2aKAMygM4uSbmBDpFmfgNtGcaQnrmVGBAI6kb2S9qfGuH3ViehwV3XpAFomvqi98sSZCLgJbOdxEuiZ1jTD22IK4ANO+f2G5P1rbjc=" 
