@@ -17,8 +17,8 @@ install:
 script:
 - cmake --version
 - bii init biicode_project
-- mkdir -p ./biicode_project/blocks/dimitrikourk/biicodeGLEW
-- mv !(biicode_project) ./biicode_project/blocks/dimitrikourk/biicodeGLEW
+- mkdir -p ./biicode_project/blocks/dimitrikourk/glew
+- mv !(biicode_project) ./biicode_project/blocks/dimitrikourk/glew
 - cd biicode_project
 - bii find -um
 - bii cpp:build 
