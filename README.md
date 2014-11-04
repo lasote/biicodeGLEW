@@ -1,5 +1,6 @@
 The OpenGL Extension Wrangler Library (GLEW)
 ============================================
+[![Build Status](https://travis-ci.org/dimitrikourk/biicodeGLEW.svg?branch=master)](https://travis-ci.org/dimitrikourk/biicodeGLEW)
 
 For requests for assistance, comments and suggestions, please open an issue on the project's source code repository: https://github.com/dimitrikourk/biicodeGLEW/issues
 
