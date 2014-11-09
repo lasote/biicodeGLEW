@@ -33,7 +33,7 @@ In order to use the block, include **dimitrikourk/glew/glew.h** in your source c
 Repositories
 ------------
 
-- Block on biicode: http://www.biicode.com/dimitrikourk/dimitrikourk/glew/master
+- Block on biicode: [![biicode block](http://img.shields.io/badge/dimitrikourk%2Fglew--v2-DEV%3A%205-yellow.svg)](http://www.biicode.com/dimitrikourk/dimitrikourk/glew/master)
 - GitHub source: https://github.com/dimitrikourk/biicodeGLEW
 
 ---
