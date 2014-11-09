@@ -1,6 +1,6 @@
 The OpenGL Extension Wrangler Library (GLEW)
 ============================================
-[![Build Status](https://travis-ci.org/dimitrikourk/biicodeGLEW.svg?branch=master)](https://travis-ci.org/dimitrikourk/biicodeGLEW)
+[![Build Status](https://travis-ci.org/dimitrikourk/biicodeGLEW.svg?branch=master)](https://travis-ci.org/dimitrikourk/biicodeGLEW) [![biicode block](http://img.shields.io/badge/dimitrikourk%2Fglew-DEV%3A%202-yellow.svg)](http://www.biicode.com/dimitrikourk/dimitrikourk/glew/master)
 
 For requests for assistance, comments and suggestions, please open an issue on the project's source code repository: https://github.com/dimitrikourk/biicodeGLEW/issues
 
@@ -29,12 +29,6 @@ The original version of the library can be found at the following locations:
 How to Use
 ----------
 In order to use the block, include **dimitrikourk/glew/glew.h** in your source code.
-
-Repositories
-------------
-
-- Block on biicode: [![biicode block](http://img.shields.io/badge/dimitrikourk%2Fglew--v2-DEV%3A%205-yellow.svg)](http://www.biicode.com/dimitrikourk/dimitrikourk/glew/master)
-- GitHub source: https://github.com/dimitrikourk/biicodeGLEW
 
 ---
 
