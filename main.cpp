@@ -1,5 +1,5 @@
 #include <iostream>
-#include <dimitrikourk/glew/glew.h> 
+#include <GL/glew.h> 
 
 using namespace std;
 

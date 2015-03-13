@@ -1,171 +1,103 @@
-# This CMakeLists.txt file helps defining your block building and compiling
-# Include the main biicode macros and functions
-# To learn more about the CMake use with biicode, visit http://docs.biicode.com/c++/building.html
-# Or check the examples below
 
-
-include(${CMAKE_HOME_DIRECTORY}/biicode.cmake)
-# Initializes block variables
-INIT_BIICODE_BLOCK()
-# This function creates the following variables:
-#     ${BII_BLOCK_NAME}       The name of the current block (e.g. "box2d")
-#     ${BII_BLOCK_USER}       The user's name (e.g. "phil")
-#     ${BII_BLOCK_PREFIX}     The directory where the block is located ("blocks" or "deps")
-
-# Also it loads variables from the cmake/bii_user_block_vars.cmake
-#     ${BII_CREATE_LIB}       TRUE if you want to create the library
-#     ${BII_LIB_SRC}          File list to create the library
-#     ${BII_LIB_TYPE}         STATIC(default) or SHARED
-#     ${BII_LIB_DATA_FILES}   Data files that have to be copied to bin
-#     ${BII_LIB_DEPS}         Dependencies to other libraries (user2_block2, user3_blockX)
-#     ${BII_LIB_SYSTEM_DEPS}  System linking requirements as winmm, m, ws32, pthread...
-
-# You can use or modify them here, for example, to add or remove files from targets based on OS
-# Or use typical cmake configurations done BEFORE defining targets. Examples:
-#     ADD_DEFINITIONS(-DFOO)
-#     FIND_PACKAGE(OpenGL QUIET)
-#     BII_FILTER_LIB_SRC(${BII_LIB_SRC})
-#     You can add INCLUDE_DIRECTORIES here too
-
-
-# Actually create targets: EXEcutables and libraries.
 IF(APPLE)
-        SET(BII_IMPLICIT_RULES_ENABLED FALSE)
+   SET(BII_IMPLICIT_RULES_ENABLED FALSE)
 ENDIF()
-ADD_BIICODE_TARGETS()
-# This function creates the following variables:
-#     ${BII_BLOCK_TARGETS} List of targets defined in this block
-#     ${BII_LIB_TARGET}  Target library name, usually in the form "user_block"
-#     ${BII_exe_name_TARGET}: Executable target (e.g. ${BII_main_TARGET}. You can also use
-#                            directly the name of the executable target (e.g. user_block_main)
 
-# Example, if your library links with pthread:
-#     TARGET_LINK_LIBRARIES(${BII_LIB_TARGET} pthread)
-#        or directly use the library target name
-#     TARGET_LINK_LIBRARIES(user_block pthread)
-#     NOTE:  This can be also done adding pthread to ${BII_LIB_DEPS}
-#            BEFORE calling ADD_BIICODE_TARGETS()
-#
-# Example: how to activate C++11. Uncomment one of this
-#     target_compile_options(${BII_LIB_TARGET} PUBLIC "-std=c++11") # Win, or linux if not gcc problems
-#     target_compile_options(${BII_LIB_TARGET} PUBLIC "-std=c++11"  "-stdlib=libc++") # MacOS
+ADD_BIICODE_TARGETS()
 
 FIND_PACKAGE(OpenGL REQUIRED)
 INCLUDE_DIRECTORIES(${OpenGL_INCLUDE_DIRS})
 LINK_DIRECTORIES(${OpenGL_LIBRARY_DIRS})
 ADD_DEFINITIONS(${OpenGL_DEFINITIONS})
+
 if (NOT ${BII_main_TARGET} STREQUAL "")
   TARGET_LINK_LIBRARIES(${BII_main_TARGET} PUBLIC ${OPENGL_LIBRARIES} )
 elseif(NOT ${BII_LIB_TARGET} STREQUAL "")
   TARGET_LINK_LIBRARIES(${BII_LIB_TARGET} PUBLIC ${OPENGL_LIBRARIES} )
 endif()
 
-#     target_compile_options(${BII_LIB_TARGET} PUBLIC "-std=c++11" "-Wl,--no-as-needed") # Ubuntu if gcc problems
-# with LLVM, you might need to link the target with "-lc++abi"
-#
-# If you want your code to be portable and activate properly C++11, you have to handle it:
-# if(WIN32)
-#     target_compile_options(${BII_LIB_TARGET} ... windows
-# elseif(APPLE)
-#     target_compile_options(${BII_LIB_TARGET} ... MacOS
-# elseif(...)
-#     ...
-# endif()
 
+# You can safely delete lines from here...
 
-##################################################################################################
+###############################################################################
+#      REFERENCE                                                              #
+###############################################################################
 #
-#            EXAMPLES
+# This CMakeLists.txt file helps defining your block building and compiling
+# To learn more about the CMake use with biicode, visit http://docs.biicode.com/c++.html
 #
-##################################################################################################
-
-#------------------ General variable --------------------#
+# ----------------------------------------------------
+# NEW FEATURE! Include cmake files from remote blocks:
+# -----------------------------------------------------
+# Now you can handle cmake dependencies alike you do with c/c++:
 #
-# Mix your CMakeLists while you're using biicode or not. Use BIICODE variable:
-#     IF(NOT BIICODE)
-#        # without using biicode (your original code)
-#     ELSE()
-#        # using biicode
-#     ENDIF()
+#     INCLUDE(user/block/myrecipe) # include myrecipe.cmake from remote user/block
 #
-
-
-#--------- Example of CMakeLists.txt that also works without biicode -------------------------#
-# Imagine, you have a project named "graphic_project" and have two blocks, "phil/window_lib" and
-# "phil/example", then you'll have this structure:
+# > EXAMPLE: Include our recipes and activate C++11 in your block (http://www.biicode.com/biicode/cmake)
 #
-#         |-- graphic_project
-#         |    +-- bii
-#         |    +-- blocks
-#         |    |    +-- phil
-#         |    |    |    +-- window_lib
-#         |    |    |    |    +-- CMakeLists.txt
-#         |    |    |    |    +-- window_lib.h ---> #include <GL/glut.h>
-#         |    |    |    |    +-- window_lib.cpp
-#         |    |    |    +-- example
-#         |    |    |    |    +-- CMakeLists.txt
-#         |    |    |         +-- example.cpp ---> #include "phil/window_lib/window_lib.h"
-#         |    +-- deps
+#     INCLUDE(biicode/cmake/tools) # Include tools.cmake file from cmake block from the "biicode" user
+#     ACTIVATE_CPP11(INTERFACE ${BII_BLOCK_TARGET})
 #
-# So, you are including phil/window_lib/window_lib.h file and linking with your system OpenGL
-# library. Finally, you'd wish to link the library with OpenGL library and add your own
-# definitions and compile your example.cpp with C++11 flag.
+#     Remember to run "bii find" to download out cmake tools file
 #
-# The CMakeLists.txt files'd be like these:
+# ---------------------
+# INIT_BIICODE_BLOCK()
+# ---------------------
+# This function creates several helper variables as ${BII_BLOCK_NAME} and ${BII_BLOCK_USER}
+# Also it loads variables from the cmake/bii_user_block_vars.cmake
+#     ${BII_LIB_SRC}          File list to create the library
+#     ${BII_LIB_TYPE}         Empty (default, STATIC most casess) STATIC or SHARED
+#     ${BII_LIB_DEPS}         Dependencies to other libraries (user2_block2, user3_blockX)
+#     ${BII_LIB_SYSTEM_HEADERS}  System linking requirements as windows.h, pthread.h, etc
 #
-#--------- phil/window_lib/CMakeLists.txt --------------#
-#
-#     IF(BIICODE)
-#         INCLUDE(${CMAKE_HOME_DIRECTORY}/biicode.cmake)
-#         INIT_BIICODE_BLOCK()
-#     ELSE()
-#        CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-#        PROJECT(Window_Lib)
-#     ENDIF()
-#
+# You can use or modify them here, for example, to add or remove files from targets based on OS
+# Or use typical cmake configurations done BEFORE defining targets. Examples:
+#     ADD_DEFINITIONS(-DFOO)
 #     FIND_PACKAGE(OpenGL QUIET)
+#     You can add INCLUDE_DIRECTORIES here too
 #
-#     IF(BIICODE)
-#        ADD_BIICODE_TARGETS()
-#        SET(TARGET_NAME ${BII_LIB_TARGET})
-#     ELSE()
-#        SET(TARGET_NAME "window-lib")
-#        ADD_LIBRARY(${TARGET_NAME} window_lib.h
-#                                   window_lib.cpp)
-#     ENDIF()
+# ---------------------
+# ADD_BIICODE_TARGETS()
+# ---------------------
 #
-#     IF(OPENGL_FOUND)
-#       TARGET_INCLUDE_DIRECTORIES(${TARGET_NAME} PUBLIC ${OPENGL_INCLUDE_DIRS})
-#       TARGET_LINK_LIBRARIES(${TARGET_NAME} LINK_PUBLIC ${OPENGL_LIBRARIES})
-#     ENDIF()
+# This function creates the following variables:
+#     ${BII_BLOCK_TARGET}  Interface (no files) target for convenient configuration of all
+#                          targets in this block, as the rest of targets always depend on it
+#                          has name in the form "user_block_interface"
+#     ${BII_LIB_TARGET}  Target library name, usually in the form "user_block". May not exist
+#                        if BII_LIB_SRC is empty
+#     ${BII_BLOCK_TARGETS} List of all targets defined in this block
+#     ${BII_BLOCK_EXES} List of executables targets defined in this block
+#     ${BII_exe_name_TARGET}: Executable target (e.g. ${BII_main_TARGET}. You can also use
+#                            directly the name of the executable target (e.g. user_block_main)
 #
-#--------- phil/example/CMakeLists.txt --------------#
+# > EXAMPLE: Add include directories to all targets of this block
 #
-#     IF(BIICODE)
-#         INCLUDE(${CMAKE_HOME_DIRECTORY}/biicode.cmake)
-#         INIT_BIICODE_BLOCK()
-#     ELSE()
-#        CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-#        PROJECT(Example)
-#     ENDIF()
+#    TARGET_INCLUDE_DIRECTORIES(${BII_BLOCK_TARGET} INTERFACE myincludedir)
 #
-#     IF(NOT BIICODE)
-#         ADD_DEFINITIONS(-DCMAKE_BUILD_TYPE=Release)
-#         INCLUDE_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../../../blocks)
-#         LINK_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR}/../window_lib)
-#     ENDIF()
+#    You can add private include directories to the Lib (if existing)
 #
-#     IF(BIICODE)
-#        ADD_BIICODE_TARGETS()
-#        SET(TARGET_NAME ${BII_example_TARGET})
-#     ELSE()
-#        SET(TARGET_NAME "example")
-#        ADD_EXECUTABLE(${TARGET_NAME} example.cpp)
-#        TARGET_LINK_LIBRARIES(${TARGET_NAME} window-lib)
-#     ENDIF()
+# > EXAMPLE: Link with pthread:
 #
-#     # Only works in Win-Linux, MacOS requires diff settings for C++11
-#     TARGET_COMPILE_OPTIONS(${TARGET_NAME} PRIVATE "-std=c++11")
+#    TARGET_LINK_LIBRARIES(${BII_BLOCK_TARGET} INTERFACE pthread)
+#        or link against library:
+#    TARGET_LINK_LIBRARIES(${BII_LIB_TARGET} PUBLIC pthread)
+#        or directly use the library target name:
+#    TARGET_LINK_LIBRARIES(user_block PUBLIC pthread)
 #
-#-----------------------------------------------------------------------------------------------#
+#    NOTE:  This can be also done adding pthread to ${BII_LIB_DEPS}
+#            BEFORE calling ADD_BIICODE_TARGETS()
+#
+# > EXAMPLE: how to activate C++11
+#
+#    IF(APPLE)
+#         TARGET_COMPILE_OPTIONS(${BII_BLOCK_TARGET} INTERFACE "-std=c++11 -stdlib=libc++")
+#    ELSEIF (WIN32 OR UNIX)
+#         TARGET_COMPILE_OPTIONS(${BII_BLOCK_TARGET} INTERFACE "-std=c++11")
+#    ENDIF(APPLE)
+#
+# > EXAMPLE: Set properties to target
+#
+#    SET_TARGET_PROPERTIES(${BII_BLOCK_TARGET} PROPERTIES COMPILE_DEFINITIONS "IOV_MAX=255")
+#
 
